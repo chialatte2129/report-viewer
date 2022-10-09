@@ -4,7 +4,7 @@ from django.shortcuts import render
 NUM_OF_ITEMS = 5
 
 
-def index(request):
+def get(request):
     first_name = ''
     last_name = ''
     item_list = []
@@ -21,7 +21,7 @@ def index(request):
 
     return render(
         request,
-        'home.html',
+        'report/upload.html',
         {
             'items': items,
             'first_name': first_name,

@@ -20,8 +20,8 @@ from django.contrib.auth import views as auth_views
 from report.views.register import RegisterView
 
 urlpatterns = [
-    path('report/', include('report.urls')),
-    path('login/', auth_views.LoginView.as_view(template_name='report/login.html'), name='login'),
+    path('report', include('report.urls')),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='report:home'), name="logout"),
     path('register/', RegisterView.as_view(), name='register'),
     path('admin/', admin.site.urls),

@@ -1,24 +1,29 @@
-{% extends "report/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
     <div class="container">
 
         <!-- Show this section only for User Items view -->
         {% if first_name or last_name %}
-            <div class="jumbotron">
-                <h1>{{ first_name }} {{ last_name }} - My App</h1>
+            <div class="card text-bg-light mt-3 mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Home - {{ first_name }} {{ last_name }}</h5>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header">Report</h5>
+                <div class="card-body">
+                    <p class="card-text">報表相關功能選單</p>
+                    <a href="upload" class="btn btn-primary">上傳資料</a>
+                    <a href="view_record" class="btn btn-primary">檢視進出資料</a>
+                </div>
             </div>
         {% endif %}
-
         <!-- Pagination -->
         <div class="pagination">
             {% if items.has_previous %}
                 <a href="?page=1">&laquo; first</a>
                 <a href="?page={{ items.previous_page_number }}">previous</a>
-            {% endif %}
-
-            {% if items.paginator.num_pages != 1 %}
-                Page {{ items.number }} of {{ items.paginator.num_pages }}.
             {% endif %}
 
             {% if items.has_next %}
