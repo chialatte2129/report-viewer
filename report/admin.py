@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Doors, DoorRecord
+from .models import Door, DoorRecord
 
 
 class DoorsAdmin(admin.ModelAdmin):
@@ -8,5 +8,5 @@ class DoorsAdmin(admin.ModelAdmin):
 class DoorRecordAdmin(admin.ModelAdmin):
     list_display = ('id', 'recorded_at', 'doors', 'count')
 
-admin.site.register(Doors, DoorsAdmin)
+admin.site.register(Door, DoorsAdmin)
 admin.site.register(DoorRecord, DoorRecordAdmin)

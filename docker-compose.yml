@@ -4,7 +4,9 @@ services:
   db:
     image: postgres
     volumes:
-     - /home/ubuntu/docker_lab/shinkong-report-db/data:/var/lib/postgresql/data
+      - /home/ubuntu/docker_lab/shinkong-report-db/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
