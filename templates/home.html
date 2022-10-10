@@ -10,7 +10,7 @@
                     <h5 class="card-title">Home - {{ first_name }} {{ last_name }}</h5>
                 </div>
             </div>
-            <div class="card">
+            <div class="card mb-3">
                 <h5 class="card-header">Report</h5>
                 <div class="card-body">
                     <p class="card-text">報表相關功能選單</p>
@@ -18,6 +18,8 @@
                     <a href="view_record" class="btn btn-primary">檢視進出資料</a>
                 </div>
             </div>
+        {% else %}
+            <div style="width:100%;height:300px;"></div>
         {% endif %}
         <!-- Pagination -->
         <div class="pagination">

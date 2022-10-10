@@ -1,30 +1,35 @@
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from report.forms import UploadForm
 NUM_OF_ITEMS = 5
 
+def handle_uploaded_file(f):
+    # with open('some/file/name.txt', 'wb+') as destination:
+    #     for chunk in f.chunks():
+    #         destination.write(chunk)
+    print("Handle Process")
 
 def get(request):
-    first_name = ''
-    last_name = ''
-    item_list = []
-    items = None
     if request.user.is_authenticated:
-        user_id = request.user.id
-        user = User.objects.get(id=user_id)
-        first_name = user.first_name
-        last_name = user.last_name
+        record_list = []
+        if request.method == 'POST':
+            form = UploadForm(request.POST, request.FILES)
+            if form.is_valid():
+                handle_uploaded_file(request.FILES['file'])
+                print("success")
+                return HttpResponse("File uploaded successfuly")
+        else:
+            form = UploadForm()
 
-        paginator = Paginator(item_list, NUM_OF_ITEMS)  # Show NUM_OF_ITEMS posts per page
-        page = request.GET.get('page')
-        items = paginator.get_page(page)
-
-    return render(
-        request,
-        'report/upload.html',
-        {
-            'items': items,
-            'first_name': first_name,
-            'last_name': last_name
-        }
-    )
+        return render(
+            request,
+            'report/upload.html',
+            {
+                "form":form,
+                "record_list":record_list
+            }
+        )
+    else:
+        return redirect("/login")
