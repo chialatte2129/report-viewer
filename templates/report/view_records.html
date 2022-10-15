@@ -5,41 +5,57 @@
         <div class="card text-bg-light mt-3 mb-3">
             <div class="card-body">
                 <h5 class="card-title">View Records</h5>
+                <form method="POST" action="/report/view_record">  
+                    {% csrf_token %}  
+                    {{ form }}
+                    <button type="submit" class="save btn btn-primary">搜尋</button>
+                </form>
             </div>
         </div>
         <div class="card text-bg-light mb-3">
-            <div class="card-body">
-                <table class="table">
+            <div class="card-body table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-bordered mb-0">
                     <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">Record Time</th>
+                            <th style="text-align:right;">In</th>
+                            <th style="text-align:right;">Out</th>
+                            <th style="text-align:right;">Total</th>
+                        </tr>
                     </thead>
                     <tbody>
+                        {% for row in item_list %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <td>{{row.recorded_time}}</td>
+                            <td style="text-align:right;">{{row.in}}</td>
+                            <td style="text-align:right;">{{row.out}}</td>
+                            <td class="{% if row.total > 0 %} total-inc {% elif row.total < 0 %} total-dec {% endif %}" style="text-align:right;">{{row.total}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <style scoped>
+        .total-inc{
+            color:green;
+        }
+        .total-dec{
+            color:red;
+        }
+        table {
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+        .my-custom-scrollbar {
+            position: relative;
+            height: 65vh;
+            overflow: auto;
+        }
+        .table-wrapper-scroll-y {
+            display: block;
+        }
+    </style>
     
 {% endblock content %}

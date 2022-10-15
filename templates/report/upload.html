@@ -4,35 +4,68 @@
     <div class="container">
         <div class="card text-bg-light mt-3 mb-3">
             <div class="card-body">
-                <h5 class="card-title">Upload File</h5>
-                <form method="POST" class="post-form" enctype="multipart/form-data">  
-                    {% csrf_token %}  
-                    {{ form.as_p }}  
-                    <button type="submit" class="save btn btn-primary">預覽</button>  
-                </form>  
+                {% if action == 'init' %}
+                    <h5 class="card-title">Upload File</h5>
+                    <form method="POST" action="/report/upload/preview" class="post-form" enctype="multipart/form-data">  
+                        {% csrf_token %}  
+                        {{ form.as_p }}  
+                        <button type="submit" class="save btn btn-primary">預覽</button>
+                    </form>
+                {% elif action == 'preview' %}  
+                    <h5 class="card-title">Preview Data</h5>
+                    <span>{{message}}<span>
+                    <form method="POST" action="/report/upload/submit">
+                        {% csrf_token %}
+                        <input type="hidden" name="record_list" value="{{ record_list }}">
+                        <input type="hidden" name="col_dict" value="{{ col_dict }}">
+                        <button type="submit" class="save btn btn-primary">送出</button>
+                        <a href="/report/upload/init" class="save btn btn-text">清空</a> 
+                    </form>
+                    {% elif action == 'submit' %}  
+                    <h5 class="card-title">Preview Data</h5>
+                    <span>{{message}}<span>
+                        <a href="/report/view_record" class="save btn btn-text">檢視進出資料</a> 
+                {% endif %} 
             </div>
         </div>
         <div class="card text-bg-light mb-3">
-            <div class="card-body">
-                <table class="table">
+            {% if record_list and action != 'init' %}
+            <div class="card-body table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-bordered table-striped mb-0">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        {% for k,v in col_dict.items %}
+                        <th style="width: 120px;">{{v}}</th>
+                        {% endfor %}
                     </tr>
                     </thead>
                     <tbody>
+                        {% for row in record_list %}
                         <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            {% for col, value in row.items %}
+                            <td style="text-align:right;">{{value}}</td>
+                            {% endfor %}
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% endif %}
         </div>
     </div>
+    <style scoped>
+    table {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+    .my-custom-scrollbar {
+        position: relative;
+        height: 65vh;
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+    </style>
 {% endblock content %}
+
